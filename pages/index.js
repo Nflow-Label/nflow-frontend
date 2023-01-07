@@ -113,7 +113,7 @@ const Home = () => {
       address: state?.["nftTokenAddress"],
       abi: erc20ABI,
       functionName: "approve",
-      args: [nflow["address"], "0x" + Number(2 ** 255).toString(16)],
+      args: [nflow["address"], "0xfffffffffffffffffffffffffffffffffffffff"],
     },
     callback: (confirmed) => {
       if (confirmed) setRender(nanoid());
@@ -157,6 +157,7 @@ const Home = () => {
     },
     callback: (confirmed) => {
       if (confirmed) {
+        state["inputNFTAmount"] = 0;
         setRender(nanoid());
       }
     },
@@ -172,11 +173,14 @@ const Home = () => {
       functionName: "nftization",
       args: [
         state["nftAddress"],
-        "0x" + (state["inputNFTTokenAmount"] * 1e18).toString(16),
+        state["inputNFTTokenAmount"]
+          ? ethers.utils.parseEther(state["inputNFTTokenAmount"])
+          : 0,
       ],
     },
     callback: (confirmed) => {
       if (confirmed) {
+        state["inputNFTTokenAmount"] = 0;
         setRender(nanoid());
       }
     },
@@ -290,6 +294,7 @@ const Home = () => {
         <div className="modal">
           <div className="modal-box">
             <input
+              disabled={!erc721Approve}
               type="number"
               placeholder="Input nft amount"
               className="input input-bordered w-full"
@@ -305,6 +310,7 @@ const Home = () => {
                 state["inputNFTTokenIds"] = erc721Input;
                 setState({ ...state });
               }}
+              value={state["inputNFTAmount"]}
             />
 
             <div className="alert alert-info shadow-lg mt-2">
@@ -327,7 +333,27 @@ const Home = () => {
                 </span>
               </div>
             </div>
-            {state["inputNFTAmount"] && !tokenizationDisabled && (
+            {!erc721Approve && (
+              <div className="alert alert-info shadow-lg mt-2">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current flex-shrink-0 w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span className="text-xs">You need approve</span>
+                </div>
+              </div>
+            )}
+            {!tokenizationDisabled && (
               <>
                 <div className="alert alert-success shadow-lg text-xs mt-2">
                   <div>
@@ -389,6 +415,9 @@ const Home = () => {
         <div className="modal">
           <div className="modal-box">
             <input
+              disabled={
+                erc20Approve < "0xfffffffffffffffffffffffffffffffffffffff"
+              }
               type="number"
               placeholder="Input nft token amount"
               className="input input-bordered w-full"
@@ -396,6 +425,7 @@ const Home = () => {
                 state["inputNFTTokenAmount"] = e.target.value;
                 setState({ ...state });
               }}
+              value={state["inputNFTTokenAmount"]}
             />
 
             <div className="alert alert-info shadow-lg mt-2">
@@ -418,7 +448,27 @@ const Home = () => {
                 </span>
               </div>
             </div>
-            {state["inputNFTTokenAmount"] && !nftizationDisabled && (
+            {!erc721Approve && (
+              <div className="alert alert-info shadow-lg mt-2">
+                <div>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    className="stroke-current flex-shrink-0 w-6 h-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    ></path>
+                  </svg>
+                  <span className="text-xs">You need approve</span>
+                </div>
+              </div>
+            )}
+            {!nftizationDisabled && (
               <>
                 <div className="alert alert-success shadow-lg mt-2">
                   <div>
@@ -466,7 +516,7 @@ const Home = () => {
               <label htmlFor="nftization" className="btn">
                 Back
               </label>
-              {erc20Approve >= 2 ** 255 ? (
+              {erc20Approve >= "0xfffffffffffffffffffffffffffffffffffffff" ? (
                 <WriteButton {...nftization} />
               ) : (
                 <WriteButton {...approveERC20} />
