@@ -1,0 +1,31 @@
+{
+  "name": "nft-5",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@rainbow-me/rainbowkit": "^0.8.1",
+    "autoprefixer": "^10.4.12",
+    "daisyui": "^2.46.1",
+    "ethers": "^5.7.2",
+    "nanoid": "^4.0.0",
+    "next": "^13.1.1",
+    "notiflix": "^3.2.5",
+    "postcss": "^8.4.17",
+    "react": "^18.2.0",
+    "react-device-detect": "^2.2.2",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.2.4",
+    "theme-change": "^2.2.0",
+    "wagmi": "^0.10.5"
+  },
+  "devDependencies": {
+    "eslint": "8.24.0",
+    "eslint-config-next": "^13.0.0"
+  }
+}
