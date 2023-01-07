@@ -12,9 +12,9 @@ import { themeChange } from "theme-change";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import React from "react";
 import Layout from "../components/Layout";
-import { mainnet } from "wagmi/chains";
+import { goerli } from "wagmi/chains";
 const { chains, provider, webSocketProvider } = configureChains(
-  [mainnet],
+  [goerli],
   [
     alchemyProvider({ apiKey: "LQ0xqhSEYELkJL2ToAS0S02mh8LiT_iR" }),
     publicProvider(),
