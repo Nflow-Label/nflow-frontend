@@ -54,7 +54,7 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href="https://twitter.com/nflow-label" target={"_blank"}>
+              <Link href="https://twitter.com/nflowlabel" target={"_blank"}>
                 Twitter
               </Link>
             </li>
